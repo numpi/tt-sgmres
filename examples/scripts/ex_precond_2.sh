@@ -11,7 +11,7 @@
 module load matlab
 
 command="cd ~/TT-Toolbox; setup; \
-  cd ~/tt-sketched-gmres; addpath(pwd); \
+  cd ~/tt-sgmres; addpath(pwd); \
   cd examples; addpath(pwd); \
   ex_precond_2; quit"
 
