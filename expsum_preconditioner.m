@@ -62,6 +62,7 @@ function SS = evaluate_expsum(alpha, beta, E, X, tol, rkmax)
     end
 
     SS = STTA_sum_recovery(Psi, Omega, alpha, Y.d, Y.n, Y.r);
+    SS = round(SS, tol);
 
     %YY = alpha(1) * Y{1};
     %for j = 2 : length(Y)
