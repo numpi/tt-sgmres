@@ -27,25 +27,32 @@ Rz = Z.r;
 
 L = cell(Nx-1, 1);
 
+RXL = cell(Nx, 1);
+RXR = cell(Nx, 1);
+for n = 1 : Nx
+    RXL{n} = reshape(X.core(X.ps(n):X.ps(n+1)-1), Rx(n)*Ix(n), Rx(n+1));
+    RXR{n} = reshape(X.core(X.ps(n):X.ps(n+1)-1), Rx(n), Ix(n)*Rx(n+1));
+end
+
 %L{1} =reshape(Y.core(Y.ps(1):Y.ps(2)-1), Iy(1), Ry(2))'* reshape(X.core(X.ps(1):X.ps(2)-1), Ix(1), Rx(2));
-L{1} =Ycell{1}'* reshape(X.core(X.ps(1):X.ps(2)-1), Ix(1), Rx(2));
+L{1} =Ycell{1}'* RXL{1};
 for n = 2:Nx-1
     %proviamo = reshape(Y.core(Y.ps(n):Y.ps(n+1)-1), Ry(n), Iy(n)*Ry(n+1));
     tempLY = L{n-1}'*Ycell{n};%*proviamo;
     reshaped_tempLY = reshape(tempLY,Rx(n)*Ix(n),Ry(n+1));
-    L{n} = reshaped_tempLY'*reshape(X.core(X.ps(n):X.ps(n+1)-1), Rx(n)*Ix(n), Rx(n+1));
+    L{n} = reshaped_tempLY'*RXL{n};
 end
 
 
 R = cell(Nx-1, 1);
 
 %R{Nx-1} = reshape(X.core(X.ps(Nx):X.ps(Nx+1)-1), Rx(Nx), Ix(Nx)) * reshape(Z.core(Z.ps(Nx):Z.ps(Nx+1)-1), Rz(Nz), Iz(Nz))';
-R{Nx-1} = reshape(X.core(X.ps(Nx):X.ps(Nx+1)-1), Rx(Nx), Ix(Nx)) * Zcell{Nz}';
+R{Nx-1} = RXR{Nx} * Zcell{Nz}';
 for n = Nx-1:-1:2
     %tempZR = reshape(Z.core(Z.ps(n):Z.ps(n+1)-1), Iz(n)*Rz(n), Rz(n+1))*R{n}';
     tempZR = Zcell{n}*R{n}';
     reshaped_tempZR = reshape(tempZR,Rz(n),Ix(n)*Rx(n+1));
-    R{n-1} = reshape(X.core(X.ps(n):X.ps(n+1)-1), Rx(n), Ix(n)*Rx(n+1))*reshaped_tempZR';   
+    R{n-1} = RXR{n}*reshaped_tempZR';   
 end
 
 
@@ -57,12 +64,12 @@ end
 
 Psi = cell(Nx-1,1);
 
-Psi{1} = reshape(X.core(X.ps(1):X.ps(2)-1), Ix(1), Rx(2))*R{1};
+Psi{1} = RXL{1}*R{1};
 for n = 2:Nx-1
-    tempLX = L{n-1}*reshape(X.core(X.ps(n):X.ps(n+1)-1), Rx(n), Ix(n)*Rx(n+1));
+    tempLX = L{n-1}*RXR{n};
     Psi{n} = reshape(tempLX, Ry(n)*Ix(n),Rx(n+1))*R{n};
 end
-Psi{Nx} = L{Nx-1}*reshape(X.core(X.ps(Nx):X.ps(Nx+1)-1), Rx(Nx), Ix(Nx));
+Psi{Nx} = L{Nx-1}*RXR{Nx};
 
 varargout = {};
 
