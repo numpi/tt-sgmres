@@ -29,15 +29,15 @@ for i = 2:n_addend
 end
 
 for i = 1: Nx-1
-    % [U,S,V] = svd(Sum_Omega{i});
-    % S(S<5*eps*S(1)) = 0;
-    % C{i} = (Sum_Psi{i}*V)*pinv(S)*U';
+    [U,S,V] = svd(Sum_Omega{i});
+    S(S<5*eps*S(1)) = 0;
+    C{i} = (Sum_Psi{i}*V)*pinv(S)*U';
     %[Qo, Ro] = qr(Sum_Omega{i}, 0);
     %C{i} = Sum_Psi{i}*pinv(Sum_Omega{i});
     %C{i} = (Sum_Psi{i}/Ro)*Qo';
-    warning('off', 'MATLAB:rankDeficientMatrix');
-    C{i} = Sum_Psi{i} / Sum_Omega{i};
-    warning('on', 'MATLAB:rankDeficientMatrix');
+    %warning('off', 'MATLAB:rankDeficientMatrix');
+    %C{i} = Sum_Psi{i} / Sum_Omega{i};
+    %warning('on', 'MATLAB:rankDeficientMatrix');
 end
 C{Nx} = Sum_Psi{Nx};
 

@@ -73,12 +73,12 @@ for jjj = 1 : length(nn)
         RR{jj} = (K * L + w * D)';
     end
     % Optimal: q = 16, rkmax = 16
-    q = 8; rkmax = inf;
+    q = 12; rkmax = inf;
     P = expsum_preconditioner(q, RR, rkmax);
     tic;
     [x , res, info] = tt_sgmres(A, b, [], ...
         [1 ; maxrank * ones(d-1, 1) ; 1], ...
-        'tol', tol*eta, 'maxit', maxit, 'ktrunc', 1, 'iap', 1e-2, 'max_rank', 30, ...
+        'tol', tol*eta, 'maxit', maxit, 'ktrunc', 1, 'iap', 1e-1, 'max_rank', 30, ...
         'streaming_reorthogonalization', false, 'preconditioner', P);
     t_prec2 = toc;
     numit_prec2 = info.it;

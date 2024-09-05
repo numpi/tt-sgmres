@@ -79,7 +79,7 @@ for jjj = 1 : length(nn)
         RR{jj} = spdiags(d, 0, size(RR{jj}, 1), size(RR{jj}, 2)) - RR{jj};
     end
     % Optimal: q = 16, rkmax = 16
-    q = 32; rkmax = inf;
+    q = 16; rkmax = inf;
     P = expsum_preconditioner(q, RR, rkmax);
     tic;
     [x , res, info] = tt_sgmres(A, b, [], ...
@@ -110,7 +110,7 @@ for jjj = 1 : length(nn)
         RR{jj} = spdiags(d, 0, size(RR{jj}, 1), size(RR{jj}, 2)) - RR{jj};
     end
     % Optimal: q = 16, rkmax = 16
-    q = 32; rkmax = inf;
+    q = 16; rkmax = inf;
     P = expsum_preconditioner(q, RR, rkmax);
     tic;
     [x , res, info] = tt_sgmres(A, b, [], ...

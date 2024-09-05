@@ -38,6 +38,7 @@ end
 L{1} =Ycell{1}'* RXL{1};
 for n = 2:Nx-1
     %proviamo = reshape(Y.core(Y.ps(n):Y.ps(n+1)-1), Ry(n), Iy(n)*Ry(n+1));
+
     tempLY = L{n-1}'*Ycell{n};%*proviamo;
     reshaped_tempLY = reshape(tempLY,Rx(n)*Ix(n),Ry(n+1));
     L{n} = reshaped_tempLY'*RXL{n};
