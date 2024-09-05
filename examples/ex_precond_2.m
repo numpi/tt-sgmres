@@ -7,7 +7,7 @@ K = 5;
 tol = 1e-6;
 eta = 0.3;
 
-nn = [ 128 256 512 ];
+nn = [ 128 256 512 1024 ];
 
 data = zeros(length(nn), 18);
 
