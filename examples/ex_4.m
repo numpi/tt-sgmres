@@ -46,9 +46,11 @@ writematrix([ (5:length(t_combined)+4)', t_combined(1:end)'], ...
     
 end    
 
-plot(3:maxdim, t_combined(1:end)')
+maxdim = length(t_combined) + 4;
+
+plot(5:maxdim, t_combined(1:end)')
 hold on
-plot(3:maxdim_gmres, t_gmres(1:end)')
+plot(5:maxdim_gmres, t_gmres(1:end)')
 
 legend('TT-SGMRES','TT-GMRES')
 title('time comparison')

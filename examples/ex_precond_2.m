@@ -5,7 +5,7 @@
 K = 5;
 
 tol = 1e-6;
-eta = 0.1;
+eta = 0.3;
 
 nn = [ 128 256 512 ];
 
@@ -20,7 +20,7 @@ for jjj = 1 : length(nn)
     tic;
     [x , res, info] = tt_sgmres(A, b, [], ...
         [1 ; 50 * ones(K-1, 1) ; 1], ...
-        'tol', tol*eta, 'maxit', maxit, 'ktrunc', 1, 'iap', 1e-2, 'max_rank', inf, ...
+        'tol', tol*eta, 'maxit', maxit, 'ktrunc', 1, 'iap', 1e-2, 'max_rank', 300, ...
         'streaming_reorthogonalization', false);
     t_combined = toc;
     numit_combined = info.it;

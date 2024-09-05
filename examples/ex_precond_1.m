@@ -13,7 +13,7 @@ for jjj = 1 : length(nn)
     setup_pde;
     
     tol = 1e-8;
-    eta = 0.1;
+    eta = 0.3;
     maxit = 200;
     
     %% Unpreconditioned
@@ -49,7 +49,7 @@ for jjj = 1 : length(nn)
     tic;
     [x , res, info] = tt_sgmres(A, b, [], ...
         [1 ; 50 * ones(d-1, 1) ; 1], ...
-        'tol', tol*eta, 'maxit', maxit, 'ktrunc', 1, 'iap', 1e-2, 'max_rank', inf, ...
+        'tol', tol*eta, 'maxit', maxit, 'ktrunc', 1, 'iap', 1e-2, 'max_rank', 300, ...
         'streaming_reorthogonalization', false, 'preconditioner', P);
     t_prec = toc;
     numit_prec = info.it;
