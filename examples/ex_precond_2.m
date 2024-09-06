@@ -5,9 +5,9 @@
 K = 5;
 
 tol = 1e-6;
-eta = 0.3;
+eta = 0.1;
 
-nn = [ 128 256 512 1024 ];
+nn = [ 128 256 512 ];
 
 data = zeros(length(nn), 18);
 
@@ -20,7 +20,7 @@ for jjj = 1 : length(nn)
     tic;
     [x , res, info] = tt_sgmres(A, b, [], ...
         [1 ; 50 * ones(K-1, 1) ; 1], ...
-        'tol', tol*eta, 'maxit', maxit, 'ktrunc', 1, 'iap', 1e-2, 'max_rank', 300, ...
+        'tol', tol*eta, 'maxit', maxit, 'ktrunc', 1, 'iap', 1e-2, 'max_rank', inf, ...
         'streaming_reorthogonalization', false);
     t_combined = toc;
     numit_combined = info.it;
@@ -51,7 +51,7 @@ for jjj = 1 : length(nn)
     P = expsum_preconditioner(q, RR, rkmax);
     tic;
     [x , res, info] = tt_sgmres(A, b, [], ...
-        [1 ; 50 * ones(K-1, 1) ; 1], ...
+        [1 ; 100 * ones(K-1, 1) ; 1], ...
         'tol', tol*eta, 'maxit', maxit, 'ktrunc', 1, 'iap', 1e-2, 'max_rank', inf, ...
         'streaming_reorthogonalization', false, 'preconditioner', P);
     t_prec = toc;
@@ -83,7 +83,7 @@ for jjj = 1 : length(nn)
     P = expsum_preconditioner(q, RR, rkmax);
     tic;
     [x , res, info] = tt_sgmres(A, b, [], ...
-        [1 ; maxrank * ones(K-1, 1) ; 1], ...
+        [1 ; 100 * ones(K-1, 1) ; 1], ...
         'tol', tol*eta, 'maxit', maxit, 'ktrunc', 1, 'iap', 1e-2, 'max_rank', maxrank, ...
         'streaming_reorthogonalization', false, 'preconditioner', P, 'tol_preconditioner', 1e-12);
     t_prec2 = toc;
@@ -114,7 +114,7 @@ for jjj = 1 : length(nn)
     P = expsum_preconditioner(q, RR, rkmax);
     tic;
     [x , res, info] = tt_sgmres(A, b, [], ...
-        [1 ; maxrank * ones(K-1, 1) ; 1], ...
+        [1 ; 100 * ones(K-1, 1) ; 1], ...
         'tol', tol*eta, 'maxit', maxit, 'ktrunc', 1, 'iap', 1e-2, 'max_rank', maxrank, ...
         'streaming_reorthogonalization', false, 'preconditioner', P, 'tol_preconditioner', 1e-12);
     t_prec2 = toc;
@@ -134,7 +134,7 @@ for jjj = 1 : length(nn)
 
     %% AMEN
     t_amen = tic;
-    x = amen_solve2(A, b, tol);
+    x = amen_solve2(A, b, tol, 'nswp', 200);
     t_amen = toc(t_amen);
     res_amen = norm(A*x - b) / norm(b);
 

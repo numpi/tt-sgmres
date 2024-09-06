@@ -13,7 +13,7 @@ for jjj = 1 : length(nn)
     setup_pde;
     
     tol = 1e-8;
-    eta = 0.3;
+    eta = 0.1;
     maxit = 200;
     
     %% Unpreconditioned
@@ -44,12 +44,12 @@ for jjj = 1 : length(nn)
         RR{jj} = (K * L + w * D)';
     end
     % Optimal: q = 16, rkmax = 16
-    q = 8; rkmax = inf;
+    q = 12; rkmax = inf;
     P = expsum_preconditioner(q, RR, rkmax);
     tic;
     [x , res, info] = tt_sgmres(A, b, [], ...
         [1 ; 50 * ones(d-1, 1) ; 1], ...
-        'tol', tol*eta, 'maxit', maxit, 'ktrunc', 1, 'iap', 1e-2, 'max_rank', 300, ...
+        'tol', tol*eta, 'maxit', maxit, 'ktrunc', 1, 'iap', 1e-2, 'max_rank', inf, ...
         'streaming_reorthogonalization', false, 'preconditioner', P);
     t_prec = toc;
     numit_prec = info.it;
@@ -96,7 +96,7 @@ for jjj = 1 : length(nn)
 
     %% AMEN
     t_amen = tic;
-    x = amen_solve2(A, b, tol);
+    x = amen_solve2(A, b, tol, 'nswp', 200);
     t_amen = toc(t_amen);
     res_amen = norm(A*x - b) / norm(b);
 
